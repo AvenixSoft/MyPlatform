@@ -1,0 +1,2548 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyPlatform — Applied Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- =====================================================
+       FAVICON / LOGO FILE
+       Replace "MyPanel Logo.png" with your actual logo file
+       ===================================================== -->
+  <link rel="icon" href="MyPanel Logo.png" type="image/png">
+
+  <script>
+    (function () {
+      var savedTheme = localStorage.getItem('theme');
+      var theme = savedTheme === 'light' ? 'light' : 'dark';
+      if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      var savedLang = localStorage.getItem('lang');
+      if (savedLang === 'fa') {
+        document.documentElement.setAttribute('lang', 'fa');
+        document.documentElement.setAttribute('dir', 'rtl');
+      }
+    })();
+  </script>
+
+  <style>
+/* =========================================
+   RESET & BASE
+   ========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:         #2563ff;
+  --blue-mid:     #1e50d9;
+  --blue-dark:    #1440c0;
+  --blue-light:   #eef2ff;
+  --blue-glow:    rgba(37,99,255,.18);
+
+  --orange:       #f97316;
+  --orange-light: #fff7ed;
+  --orange-dark:  #c2590e;
+
+  --purple:       #8b5cf6;
+  --purple-light: #f3effe;
+  --green:        #22c55e;
+  --rose:         #f43f5e;
+
+  --bg:           #ffffff;
+  --bg-alt:       #f8faff;
+  --bg-subtle:    #f1f5fd;
+  --surface:      #ffffff;
+  --surface-alt:  #f8faff;
+  --border:       #e2e8f8;
+  --border-soft:  #eef2ff;
+
+  --text:         #0d1a38;
+  --text-muted:   #576080;
+  --text-xmuted:  #94a3b8;
+
+  --shadow-xs:    0 1px 2px rgba(15,30,80,.04);
+  --shadow-sm:    0 1px 6px rgba(15,30,80,.07), 0 1px 2px rgba(15,30,80,.04);
+  --shadow-md:    0 4px 20px rgba(15,30,80,.09), 0 2px 6px rgba(15,30,80,.05);
+  --shadow-lg:    0 12px 48px rgba(15,30,80,.12), 0 4px 16px rgba(15,30,80,.07);
+  --shadow-xl:    0 24px 80px rgba(15,30,80,.16), 0 8px 24px rgba(15,30,80,.08);
+  --shadow-blue:  0 8px 32px rgba(37,99,255,.25);
+
+  --radius-xs:    6px;
+  --radius-sm:    10px;
+  --radius-md:    16px;
+  --radius-lg:    24px;
+  --radius-xl:    36px;
+  --radius-full:  9999px;
+
+  --transition:   .22s cubic-bezier(.4,0,.2,1);
+  --transition-slow: .45s cubic-bezier(.4,0,.2,1);
+  --font:         'Inter', system-ui, -apple-system, sans-serif;
+  --navbar-h:     72px;
+}
+
+[data-theme="dark"] {
+  --bg:           #07101f;
+  --bg-alt:       #0c1829;
+  --bg-subtle:    #101e32;
+  --surface:      #111f35;
+  --surface-alt:  #0e1a2e;
+  --border:       #1e3050;
+  --border-soft:  #162540;
+
+  --text:         #e8f0fe;
+  --text-muted:   #8dabc8;
+  --text-xmuted:  #4a6680;
+
+  --blue-light:   #12244a;
+  --orange-light: #271605;
+  --purple-light: #221a3d;
+
+  --shadow-sm:    0 1px 6px rgba(0,0,0,.3);
+  --shadow-md:    0 4px 20px rgba(0,0,0,.38);
+  --shadow-lg:    0 12px 48px rgba(0,0,0,.44);
+  --shadow-xl:    0 24px 80px rgba(0,0,0,.52);
+  --shadow-blue:  0 8px 32px rgba(37,99,255,.35);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
+}
+
+img, svg { display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { cursor: pointer; font-family: var(--font); border: none; background: none; }
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-alt); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+/* =========================================
+   CONTAINER
+   ========================================= */
+.container {
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* =========================================
+   TYPOGRAPHY HELPERS
+   ========================================= */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: var(--blue-light);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 18px;
+  border: 1px solid rgba(37,99,255,.12);
+}
+
+.section-title {
+  font-size: clamp(1.85rem, 3.2vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -.025em;
+  color: var(--text);
+  max-width: 640px;
+  margin: 0 auto 18px;
+}
+
+.section-sub {
+  font-size: 1.08rem;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+.section-header { text-align: center; margin-bottom: 64px; }
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 60%, var(--orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  border-radius: var(--radius-md);
+  font-size: .9rem;
+  font-weight: 650;
+  transition: all var(--transition);
+  white-space: nowrap;
+  outline-offset: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background var(--transition);
+}
+.btn:hover::after { background: rgba(255,255,255,.08); }
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
+  color: #fff;
+  box-shadow: var(--shadow-blue);
+}
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(37,99,255,.38);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.btn--ghost:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
+
+.btn--white {
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 4px 16px rgba(0,0,0,.14);
+}
+.btn--white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.2); }
+
+.btn--ghost-white {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,.4);
+}
+.btn--ghost-white:hover { border-color: #fff; background: rgba(255,255,255,.12); transform: translateY(-2px); }
+
+.btn--lg { padding: 15px 32px; font-size: 1rem; border-radius: var(--radius-lg); }
+.btn--sm { padding: 7px 16px; font-size: .8rem; border-radius: var(--radius-sm); }
+
+/* =========================================
+   NAVBAR
+   ========================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--navbar-h);
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border-soft);
+  transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+[data-theme="dark"] .navbar { background: rgba(7,16,31,.88); }
+.navbar.scrolled { box-shadow: var(--shadow-sm); }
+
+.navbar__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* =====================================================
+   LOGO — NAVBAR
+   Replace the <img> src below with your logo file path.
+   Example: src="assets/logo.svg" or src="logo.png"
+   Recommended size: ~140×40px, transparent background.
+   ===================================================== */
+.navbar__brand {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Fallback placeholder shown when no image is provided */
+.logo-placeholder {
+  height: 50px;
+  min-width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--text-xmuted);
+  letter-spacing: .06em;
+  user-select: none;
+}
+
+.navbar__nav { margin-inline-start: auto; }
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-link {
+  padding: 7px 13px;
+  font-size: .858rem;
+  font-weight: 520;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+  position: relative;
+}
+.nav-link:hover { color: var(--blue); background: var(--blue-light); }
+.nav-link.active { color: var(--blue); font-weight: 600; }
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-inline-start: auto;
+}
+
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+}
+
+.lang-btn {
+  padding: 4px 10px;
+  border-radius: 7px;
+  color: var(--text-muted);
+  font-size: .78rem;
+  font-weight: 700;
+  transition: all var(--transition);
+  letter-spacing: .04em;
+}
+.lang-btn:hover { color: var(--blue); }
+.lang-btn.active {
+  color: var(--blue);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+}
+
+.dark-toggle {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border);
+  transition: all var(--transition);
+  background: var(--surface);
+}
+.dark-toggle:hover { color: var(--blue); border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-light); }
+.dark-toggle svg { width: 17px; height: 17px; }
+
+.icon-moon { display: none; }
+[data-theme="dark"] .icon-sun  { display: none; }
+[data-theme="dark"] .icon-moon { display: block; }
+
+.navbar__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  margin-inline-start: auto;
+}
+.navbar__hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: all var(--transition);
+}
+.navbar__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar__hamburger.open span:nth-child(2) { opacity: 0; }
+.navbar__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none; flex-direction: column; gap: 8px;
+  padding: 16px 24px 24px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu ul { display: flex; flex-direction: column; gap: 4px; }
+.mobile-menu .nav-link { display: block; padding: 10px 12px; font-size: .95rem; }
+.mobile-menu .btn { align-self: flex-start; margin-top: 8px; }
+
+/* =========================================
+   HERO
+   ========================================= */
+.hero {
+  padding: 96px 0 88px;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Big background mesh gradient */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 70% -10%, rgba(37,99,255,.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at -10% 80%, rgba(139,92,246,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 95% 80%, rgba(249,115,22,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: 72px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .78rem;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  background: var(--blue-light);
+  color: var(--blue);
+  margin-bottom: 22px;
+  border: 1px solid rgba(37,99,255,.16);
+  letter-spacing: .02em;
+}
+
+.hero__badge-dot {
+  width: 7px; height: 7px;
+  background: var(--blue);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.7); }
+}
+
+.hero__title {
+  font-size: clamp(2.4rem, 5vw, 3.9rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  margin-bottom: 22px;
+  color: var(--text);
+}
+
+.hero__title--accent {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 60%, var(--orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero__desc {
+  font-size: 1.13rem;
+  color: var(--text-muted);
+  max-width: 500px;
+  margin-bottom: 36px;
+  line-height: 1.75;
+}
+
+.hero__buttons { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 44px; }
+
+.hero__social-proof { display: flex; align-items: center; gap: 16px; }
+
+.avatars { display: flex; }
+.avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 2.5px solid var(--bg);
+  margin-inline-end: -11px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+}
+.avatar--1 { background: linear-gradient(135deg,#c7d8ff,#2563ff); }
+.avatar--2 { background: linear-gradient(135deg,#ffd5a8,#f97316); }
+.avatar--3 { background: linear-gradient(135deg,#c7ffdc,#22c55e); }
+.avatar--4 { background: linear-gradient(135deg,#f8c7ff,#8b5cf6); }
+
+.hero__stat { font-size: .875rem; color: var(--text-muted); padding-inline-start: 18px; }
+.hero__stat strong { display: block; font-size: 1.05rem; font-weight: 800; color: var(--text); }
+
+/* =====================================================
+   HERO VISUAL / IMAGE AREA
+   ===================================================== */
+.hero__visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 460px;
+}
+
+.hero__glow-blue, .hero__glow-orange, .hero__glow-purple {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero__glow-blue   { width: 300px; height: 300px; background: rgba(37,99,255,.16); top: 0; right: 0; animation: floatGlow 6s ease-in-out infinite; }
+.hero__glow-orange { width: 240px; height: 240px; background: rgba(249,115,22,.13); bottom: 5%; left: 0; animation: floatGlow 8s ease-in-out infinite reverse; }
+.hero__glow-purple { width: 200px; height: 200px; background: rgba(139,92,246,.11); top: 40%; right: 15%; animation: floatGlow 10s ease-in-out infinite 2s; }
+
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50%       { transform: translate(14px,-16px) scale(1.1); }
+}
+
+.hero__logo-wrap {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 360px;
+  animation: floatLogo 5s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-16px); }
+}
+
+/* =====================================================
+   HERO IMAGE PLACEHOLDER
+   Replace this <div> in your HTML with:
+     <img src="your-hero-image.png" alt="Dashboard preview"
+          class="hero__img" />
+   Recommended: 600×500px PNG with transparent background
+   or a dashboard/product screenshot.
+   ===================================================== */
+.hero-img-placeholder {
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 4/3.5;
+  background:
+    linear-gradient(145deg, var(--blue-light) 0%, rgba(139,92,246,.08) 50%, var(--orange-light) 100%);
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-xmuted);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-align: center;
+  padding: 24px;
+}
+
+.hero-img-placeholder svg { width: 48px; height: 48px; opacity: .35; }
+
+.hero__img {
+  width: 100%;
+  max-width: 360px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl), 0 0 0 1px var(--border-soft);
+  object-fit: cover;
+}
+
+/* Dashboard card overlay */
+.hero__card {
+  position: absolute;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-soft);
+  z-index: 3;
+  padding: 12px 16px;
+}
+
+.hero__card--stats {
+  bottom: 12%;
+  inset-inline-start: -20px;
+  min-width: 160px;
+  animation: floatBadge 4.5s ease-in-out infinite;
+}
+
+.hero__card--notification {
+  top: 8%;
+  inset-inline-end: -16px;
+  min-width: 180px;
+  animation: floatBadge 5.5s ease-in-out infinite reverse;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-card__label {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-xmuted);
+  margin-bottom: 6px;
+}
+
+.hero-card__value {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: -.02em;
+}
+
+.hero-card__sub {
+  font-size: .72rem;
+  color: var(--green);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.hero-card__notif-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 8px;
+}
+.hero-card__notif-icon svg { width: 14px; height: 14px; color: var(--blue); }
+.hero-card__notif-text { font-size: .78rem; color: var(--text-muted); line-height: 1.4; }
+.hero-card__notif-text strong { color: var(--text); font-weight: 700; }
+
+/* =========================================
+   STATS STRIP
+   ========================================= */
+.stats-strip {
+  padding: 64px 0;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(37,99,255,.04), transparent);
+}
+
+.stats-strip__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 24px 32px;
+  border-inline-end: 1px solid var(--border);
+}
+.stat-item:last-child { border-inline-end: none; }
+
+.stat-item__value {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -.03em;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-item__accent { color: var(--blue); }
+
+.stat-item__label {
+  font-size: .875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* =========================================
+   SERVICES
+   ========================================= */
+.services {
+  padding: 112px 0;
+  background: var(--bg);
+}
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.service-card {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-soft);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+  display: flex;
+  flex-direction: column;
+}
+.service-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); }
+
+/* =====================================================
+   SERVICE CARD IMAGE AREA
+   Replace the .service-card__illustration <div> in HTML with:
+
+   Card 1 (MyForm):
+     <div class="service-card__img-wrap">
+       <img src="your-form-screenshot.png"
+            alt="MyForm product screenshot"
+            class="service-card__img" />
+     </div>
+
+   Card 2 (MyPanel):
+     <div class="service-card__img-wrap">
+       <img src="your-panel-screenshot.png"
+            alt="MyPanel dashboard screenshot"
+            class="service-card__img" />
+     </div>
+
+   Recommended: ~640×280px, 16:7 aspect ratio
+   ===================================================== */
+.service-card__img-wrap {
+  width: 100%; overflow: hidden;
+  border-bottom: 1px solid var(--border-soft);
+}
+.service-card__img {
+  width: 100%; height: 240px;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-slow);
+}
+.service-card:hover .service-card__img { transform: scale(1.04); }
+
+.service-card__illustration {
+  padding: 52px 40px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card__illustration--blue {
+  background: linear-gradient(145deg, var(--blue-light) 0%, rgba(139,92,246,.06) 100%);
+}
+.service-card__illustration--orange {
+  background: linear-gradient(145deg, var(--orange-light) 0%, rgba(249,115,22,.04) 100%);
+}
+.service-card__illustration--purple {
+  background: linear-gradient(145deg, var(--purple-light) 0%, rgba(139,92,246,.05) 100%);
+}
+
+/* Decorative circles in illustration bg */
+.service-card__illustration::before,
+.service-card__illustration::after {
+  content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+}
+.service-card__illustration--blue::before {
+  width: 180px; height: 180px;
+  background: rgba(37,99,255,.06);
+  top: -50px; right: -50px;
+}
+.service-card__illustration--orange::before {
+  width: 200px; height: 200px;
+  background: rgba(249,115,22,.06);
+  top: -60px; right: -60px;
+}
+.service-card__illustration--purple::before {
+  width: 190px; height: 190px;
+  background: rgba(139,92,246,.07);
+  top: -55px; right: -55px;
+}
+
+.sc-icon-wrap svg { width: 84px; height: 84px; position: relative; z-index: 1; }
+
+.service-card__body {
+  padding: 32px 36px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.service-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  width: fit-content;
+}
+.service-card__badge--blue { color: var(--blue); background: var(--blue-light); }
+.service-card__badge--orange { color: var(--orange); background: var(--orange-light); }
+.service-card__badge--purple { color: var(--purple); background: var(--purple-light); }
+
+.service-card__name { font-size: 1.5rem; font-weight: 850; color: var(--text); }
+.service-card__desc { font-size: .9rem; color: var(--text-muted); line-height: 1.72; margin-top: 4px; }
+
+.service-card__features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.service-card__feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .855rem;
+  color: var(--text-muted);
+}
+
+.feat-check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--blue-light);
+  display: flex; align-items: center; justify-content: center;
+}
+.feat-check svg { width: 11px; height: 11px; color: var(--blue); }
+.service-card__badge--orange ~ * .feat-check { background: var(--orange-light); }
+
+.service-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--blue);
+  transition: gap var(--transition);
+}
+.service-card__link:hover { gap: 12px; }
+.service-card__link svg { width: 16px; height: 16px; }
+
+/* =========================================
+   FEATURES
+   ========================================= */
+.features {
+  padding: 112px 0;
+  background: var(--bg-alt);
+}
+
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.feature-box {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  cursor: default;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.feature-box:hover, .feature-box:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--blue-light);
+}
+.feature-box:hover::before, .feature-box:focus-visible::before { opacity: 1; }
+
+.feature-box__icon {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.feature-box__icon svg { width: 24px; height: 24px; }
+
+.feature-box__icon--blue   { background: var(--blue-light);   color: var(--blue); }
+.feature-box__icon--orange { background: var(--orange-light); color: var(--orange); }
+.feature-box__icon--purple { background: rgba(139,92,246,.1); color: var(--purple); }
+.feature-box__icon--green  { background: rgba(34,197,94,.1);  color: var(--green); }
+
+.feature-box h3 { font-size: 1.02rem; font-weight: 750; margin-bottom: 10px; color: var(--text); }
+.feature-box p  { font-size: .875rem; color: var(--text-muted); line-height: 1.68; }
+
+/* =========================================
+   TESTIMONIALS
+   ========================================= */
+.testimonials {
+  padding: 112px 0;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.testimonial-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.testimonial-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+.testimonial-card__stars {
+  display: flex;
+  gap: 3px;
+}
+.star { width: 16px; height: 16px; color: #f59e0b; }
+
+.testimonial-card__text {
+  font-size: .925rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  font-style: italic;
+  flex: 1;
+}
+
+.testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+/* =====================================================
+   TESTIMONIAL AVATAR
+   Replace the .testimonial-avatar div with:
+     <img src="author-photo.jpg"
+          alt="John Smith"
+          class="testimonial-avatar-img" />
+
+   Recommended: 48×48px square, cropped to face
+   ===================================================== */
+.testimonial-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .875rem;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+.testimonial-avatar-img {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.testimonial-card__name { font-size: .9rem; font-weight: 750; color: var(--text); }
+.testimonial-card__role { font-size: .78rem; color: var(--text-xmuted); margin-top: 2px; }
+
+/* =========================================
+   PRICING
+   ========================================= */
+.pricing {
+  padding: 112px 0;
+  background: var(--bg-alt);
+}
+
+.pricing__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.pricing-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px 40px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+
+.pricing-card--featured {
+  background: linear-gradient(160deg, #1340e8 0%, #0f2fb5 50%, #1e1270 100%);
+  border-color: transparent;
+  box-shadow: var(--shadow-blue), var(--shadow-lg);
+  transform: scale(1.04);
+}
+.pricing-card--featured:hover { transform: scale(1.04) translateY(-5px); }
+
+.pricing-card--featured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1.5' fill='white' fill-opacity='.04'/%3E%3C/svg%3E");
+}
+
+.pricing-card__popular {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(255,255,255,.2);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,.25);
+}
+
+.pricing-card__name {
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.pricing-card--featured .pricing-card__name { color: rgba(255,255,255,.85); }
+
+.pricing-card__price {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.pricing-card__currency {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding-bottom: 8px;
+}
+.pricing-card--featured .pricing-card__currency { color: rgba(255,255,255,.7); }
+
+.pricing-card__amount {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -.04em;
+  color: var(--text);
+  line-height: 1;
+}
+.pricing-card--featured .pricing-card__amount { color: #fff; }
+
+.pricing-card__period {
+  font-size: .85rem;
+  color: var(--text-xmuted);
+  padding-bottom: 10px;
+}
+.pricing-card--featured .pricing-card__period { color: rgba(255,255,255,.55); }
+
+.pricing-card__desc {
+  font-size: .875rem;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+.pricing-card--featured .pricing-card__desc { color: rgba(255,255,255,.65); }
+
+.pricing-card__divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 24px;
+}
+.pricing-card--featured .pricing-card__divider { background: rgba(255,255,255,.12); }
+
+.pricing-card__features {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 32px;
+}
+
+.pricing-feat {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: .875rem;
+  color: var(--text-muted);
+}
+.pricing-card--featured .pricing-feat { color: rgba(255,255,255,.8); }
+
+.pricing-feat-icon {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--blue-light);
+  display: flex; align-items: center; justify-content: center;
+}
+.pricing-feat-icon svg { width: 11px; height: 11px; color: var(--blue); }
+.pricing-card--featured .pricing-feat-icon { background: rgba(255,255,255,.15); }
+.pricing-card--featured .pricing-feat-icon svg { color: #fff; }
+
+.pricing-card--featured .btn--primary {
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
+}
+.pricing-card--featured .btn--primary:hover { box-shadow: 0 8px 32px rgba(0,0,0,.28); }
+
+/* =========================================
+   TRUSTED COMPANIES
+   ========================================= */
+.trusted {
+  padding: 64px 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.trusted__label {
+  text-align: center;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-xmuted);
+  margin-bottom: 36px;
+}
+
+.trusted__logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+}
+
+/* =====================================================
+   TRUSTED LOGOS IMAGE
+   Replace each .trusted__logo-item with:
+     <a href="#" class="trusted__logo-item">
+       <img src="company-logo.svg"
+            alt="Company Name"
+            class="trusted__logo-img" />
+     </a>
+
+   Recommended: SVG format, ~120×40px, grayscale or
+   with your brand color, transparent background.
+   ===================================================== */
+.trusted__logo-item {
+  padding: 13px 32px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: .85rem;
+  font-weight: 800;
+  color: var(--text-xmuted);
+  letter-spacing: .06em;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.trusted__logo-item:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.trusted__logo-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) opacity(.55);
+  transition: filter var(--transition);
+}
+.trusted__logo-item:hover .trusted__logo-img { filter: none; }
+
+/* =========================================
+   CTA BANNER
+   ========================================= */
+.cta-banner {
+  padding: 96px 0;
+  background: linear-gradient(135deg, #0f2390 0%, #1340e8 35%, #8b0ae8 70%, #f97316 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='3' fill='white' fill-opacity='0.04'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 70% 80% at 80% 20%, rgba(255,255,255,.06), transparent);
+}
+
+.cta-banner__inner {
+  position: relative; z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.cta-banner__text h2 {
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -.02em;
+}
+.cta-banner__text p { font-size: 1.05rem; color: rgba(255,255,255,.72); }
+
+.cta-banner__actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* =========================================
+   FOOTER
+   ========================================= */
+.footer {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  padding-top: 80px;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr 1.5fr;
+  gap: 48px;
+  padding-bottom: 64px;
+}
+
+.footer__heading {
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.footer__desc {
+  font-size: .875rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 22px;
+  max-width: 240px;
+}
+
+/* =====================================================
+   FOOTER LOGO IMAGE
+   Replace the .footer-logo-placeholder with:
+     <img src="your-logo.png"
+          alt="MyPlatform"
+          class="footer-logo-img" />
+   Recommended: same file as navbar logo, ~130×40px
+   ===================================================== */
+.footer-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 18px;
+  display: block;
+}
+
+.footer-logo-placeholder {
+  height: 131px;
+  min-width: 180px;
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--text-xmuted);
+  letter-spacing: .06em;
+  margin-bottom: 18px;
+  padding: 0 16px;
+}
+
+.footer__socials { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.social-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  transition: all var(--transition);
+  background: var(--surface);
+}
+.social-icon svg { width: 15px; height: 15px; }
+.social-icon:hover { color: var(--blue); border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 4px 12px var(--blue-glow); }
+
+.footer__links { display: flex; flex-direction: column; gap: 12px; }
+.footer__links a {
+  font-size: .875rem;
+  color: var(--text-muted);
+  transition: color var(--transition), padding-inline-start var(--transition);
+}
+.footer__links a:hover { color: var(--blue); padding-inline-start: 4px; }
+
+.footer__newsletter-desc { font-size: .875rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+
+.newsletter-form { display: flex; flex-direction: column; gap: 10px; }
+
+.newsletter-input {
+  padding: 11px 15px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .875rem;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.newsletter-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-light); }
+.newsletter-input::placeholder { color: var(--text-xmuted); }
+.newsletter-btn { width: 100%; justify-content: center; }
+
+.footer__bottom {
+  border-top: 1px solid var(--border);
+  padding: 22px 0;
+}
+.footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer__copy { font-size: .8rem; color: var(--text-xmuted); }
+.footer__legal { display: flex; gap: 24px; }
+.footer__legal a {
+  font-size: .8rem; color: var(--text-xmuted);
+  transition: color var(--transition);
+}
+.footer__legal a:hover { color: var(--blue); }
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+.fade-in {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.fade-in--delay  { transition-delay: .12s; }
+.fade-in--delay2 { transition-delay: .24s; }
+.fade-in--delay3 { transition-delay: .36s; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* =========================================
+   RTL SUPPORT
+   ========================================= */
+[dir="rtl"] .navbar__nav       { margin-inline-start: 0; margin-inline-end: auto; }
+[dir="rtl"] .navbar__actions   { margin-inline-start: 0; }
+[dir="rtl"] .hero__inner       { direction: rtl; }
+[dir="rtl"] .hero__title, [dir="rtl"] .hero__desc { text-align: start; }
+[dir="rtl"] .footer__grid      { direction: rtl; }
+[dir="rtl"] .footer__desc      { text-align: start; }
+[dir="rtl"] .service-card__link svg { transform: scaleX(-1); }
+[dir="rtl"] body               { font-family: 'Vazirmatn', var(--font); }
+[dir="rtl"] .hero__badge, [dir="rtl"] .floating-badge { letter-spacing: 0; }
+[dir="rtl"] .stat-item         { border-inline-start: 1px solid var(--border); border-inline-end: none; }
+[dir="rtl"] .stat-item:last-child { border-inline-start: none; }
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 1100px) {
+  .features__grid      { grid-template-columns: repeat(2, 1fr); }
+  .testimonials__grid  { grid-template-columns: repeat(2, 1fr); }
+  .pricing__grid       { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .pricing-card--featured { transform: none; }
+  .pricing-card--featured:hover { transform: translateY(-5px); }
+}
+
+@media (max-width: 1024px) {
+  .footer__grid { grid-template-columns: repeat(2, 1fr); }
+  .hero__inner  { gap: 48px; }
+  .stats-strip__grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-item { border-inline-end: 1px solid var(--border); }
+  .stat-item:nth-child(even) { border-inline-end: none; }
+  .stat-item:nth-child(1), .stat-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+  .services__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .hero__inner { grid-template-columns: 1fr; gap: 56px; }
+  .hero__content { text-align: center; }
+  .hero__buttons { justify-content: center; }
+  .hero__social-proof { justify-content: center; }
+  .hero__visual { order: -1; }
+  .hero__desc { margin: 0 auto 36px; }
+
+  .services__grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+}
+
+@media (max-width: 768px) {
+  :root { --navbar-h: 64px; }
+
+  .navbar__nav, .navbar__actions .btn,
+  .navbar__actions .lang-switcher { display: none; }
+  .navbar__actions { margin-inline-start: auto; }
+  .navbar__hamburger { display: flex; margin-inline-start: 4px; }
+
+  .hero { padding: 52px 0 64px; }
+  .hero__visual { min-height: 320px; }
+  .hero-img-placeholder { max-width: 260px; }
+  .hero__card--stats { inset-inline-start: 0; }
+  .hero__card--notification { inset-inline-end: 0; }
+
+  .stats-strip { padding: 48px 0; }
+  .stats-strip__grid { grid-template-columns: repeat(2, 1fr); }
+
+  .features { padding: 80px 0; }
+  .testimonials__grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+
+  .cta-banner__inner { flex-direction: column; text-align: center; align-items: center; }
+
+  .footer { padding-top: 56px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer__desc { max-width: 100%; }
+  .footer__col--brand { text-align: center; }
+  .footer__col--brand .footer-logo-placeholder { margin-inline: auto; }
+  .footer__col--brand .footer-logo-img { margin-inline: auto; }
+  .footer__socials { justify-content: center; }
+
+  .section-header { margin-bottom: 48px; }
+}
+
+@media (max-width: 600px) {
+  .features__grid { grid-template-columns: 1fr; }
+  .hero__social-proof { flex-wrap: wrap; row-gap: 10px; }
+  .hero__stat { padding-inline-start: 0; flex-basis: 100%; text-align: center; }
+  .footer__legal { flex-wrap: wrap; justify-content: center; }
+  .footer__bottom-inner { flex-direction: column; text-align: center; }
+  .stats-strip__grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 20px; }
+  .hero__buttons { flex-direction: column; align-items: stretch; }
+  .hero__buttons .btn { justify-content: center; }
+  .cta-banner__actions { flex-direction: column; width: 100%; }
+  .cta-banner__actions .btn { justify-content: center; }
+  .hero__card { display: none; }
+  .hero__title { font-size: clamp(2rem, 8vw, 2.6rem); }
+  .hero__desc { font-size: 1rem; }
+}
+
+/* =========================================
+   FOCUS & ACCESSIBILITY
+   ========================================= */
+:focus-visible {
+  outline: 2.5px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .fade-in { opacity: 1; transform: none; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" role="banner" id="top">
+    <div class="container navbar__inner">
+
+      <!-- =====================================================
+           NAVBAR LOGO
+           Option A — Image logo (recommended):
+             <a href="#" class="navbar__brand">
+               <img src="YOUR_LOGO.png" alt="MyPlatform" class="logo-img" />
+             </a>
+
+           Option B — Text logo (quick fallback):
+             <a href="#" class="navbar__brand" style="font-size:1.1rem;font-weight:900;color:var(--blue);">
+               MyPlatform
+             </a>
+
+           Currently showing placeholder. Replace when ready.
+           ===================================================== -->
+      <a href="My.html" class="navbar__brand" aria-label="MyPlatform home">
+        <img class="logo-placeholder" aria-hidden="true" src="MyPng.png">
+      </a>
+
+      <nav class="navbar__nav" role="navigation" aria-label="Main navigation">
+        <ul class="navbar__links" role="list">
+          <li><a href="#home"         class="nav-link" data-i18n="nav_home">Home</a></li>
+          <li><a href="#features"     class="nav-link" data-i18n="nav_features">Features</a></li>
+          <li><a href="#services"     class="nav-link" data-i18n="nav_services">Services</a></li>
+          <li><a href="#pricing-sect" class="nav-link" data-i18n="nav_pricing">Pricing</a></li>
+          <li><a href="#resources"    class="nav-link" data-i18n="nav_resources">Resources</a></li>
+          <li><a href="#about"        class="nav-link" data-i18n="nav_about">About Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar__actions">
+        <div class="lang-switcher" role="group" aria-label="Language switcher">
+          <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+          <button class="lang-btn" data-lang="fa" aria-pressed="false">FA</button>
+        </div>
+
+        <button class="dark-toggle" id="darkToggle" aria-label="Toggle dark mode" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <a href="#" class="btn btn--primary" data-i18n="nav_cta">Get Started</a>
+      </div>
+
+      <button class="navbar__hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul role="list">
+        <li><a href="#home"         class="nav-link" data-i18n="nav_home">Home</a></li>
+        <li><a href="#features"     class="nav-link" data-i18n="nav_features">Features</a></li>
+        <li><a href="#services"     class="nav-link" data-i18n="nav_services">Services</a></li>
+        <li><a href="#pricing-sect" class="nav-link" data-i18n="nav_pricing">Pricing</a></li>
+        <li><a href="#resources"    class="nav-link" data-i18n="nav_resources">Resources</a></li>
+        <li><a href="#about"        class="nav-link" data-i18n="nav_about">About Us</a></li>
+      </ul>
+      <div class="lang-switcher" style="margin-top:4px">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="fa">FA</button>
+      </div>
+      <a href="#" class="btn btn--primary" data-i18n="nav_cta">Get Started</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="home" aria-labelledby="heroHeading">
+      <div class="container hero__inner">
+
+        <!-- Left content -->
+        <div class="hero__content fade-in">
+          <span class="hero__badge">
+            <span class="hero__badge-dot"></span>
+            <span data-i18n="hero_badge">🚀 New Platform, New Possibilities</span>
+          </span>
+
+          <h1 class="hero__title" id="heroHeading">
+            <span data-i18n="hero_title_line1">Grow Your Business</span><br/>
+            <span class="hero__title--accent" data-i18n="hero_title_line2">Smarter &amp; Faster</span>
+          </h1>
+
+          <p class="hero__desc" data-i18n="hero_desc">
+            All-in-one platform to build forms, manage clients, and analyze performance — without the complexity.
+          </p>
+
+          <div class="hero__buttons">
+            <a href="#services" class="btn btn--primary btn--lg" data-i18n="hero_cta1">Explore Services</a>
+            <a href="#features" class="btn btn--ghost btn--lg"   data-i18n="hero_cta2">Learn More</a>
+          </div>
+
+          <div class="hero__social-proof">
+            <div class="avatars" aria-hidden="true">
+              <div class="avatar avatar--1"></div>
+              <div class="avatar avatar--2"></div>
+              <div class="avatar avatar--3"></div>
+              <div class="avatar avatar--4"></div>
+            </div>
+            <p class="hero__stat">
+              <strong>10,000+</strong>
+              <span data-i18n="hero_stat">Happy customers worldwide</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right visual -->
+        <div class="hero__visual fade-in fade-in--delay">
+          <div class="hero__glow-orange" aria-hidden="true"></div>
+          <div class="hero__glow-blue"   aria-hidden="true"></div>
+          <div class="hero__glow-purple" aria-hidden="true"></div>
+
+          <div class="hero__logo-wrap">
+            <!-- =====================================================
+                 HERO IMAGE
+                 Replace the placeholder below with your actual image:
+                   <img src="hero-dashboard.png"
+                        alt="MyPlatform dashboard preview"
+                        class="hero__img" />
+
+                 Or keep both and show image, hide placeholder:
+                   add style="display:none" to hero-img-placeholder div
+
+                 Recommended: product screenshot or mockup, ~600×500px
+                 ===================================================== -->
+            <div class="hero-img-placeholder" aria-label="Product image placeholder">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="6" y="10" width="36" height="28" rx="3"/>
+                <path d="M16 38v4M32 38v4M10 42h28"/>
+                <circle cx="18" cy="22" r="4"/>
+                <path d="M26 20h8M26 25h5"/>
+              </svg>
+              <span>PUT YOUR IMAGE HERE</span>
+              <span style="font-size:.68rem;font-weight:400;color:var(--text-xmuted);letter-spacing:0">Replace with &lt;img src="..."&gt;</span>
+            </div>
+          </div>
+
+          <!-- Floating stat card -->
+          <div class="hero__card hero__card--stats" aria-hidden="true">
+            <div class="hero-card__label">Monthly Growth</div>
+            <div class="hero-card__value">+34%</div>
+            <div class="hero-card__sub">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12"><path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/></svg>
+              vs last month
+            </div>
+          </div>
+
+          <!-- Floating notification card -->
+          <div class="hero__card hero__card--notification" aria-hidden="true">
+            <div class="hero-card__notif-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="hero-card__notif-text"><strong>New form submitted</strong><br/>Just 2 minutes ago</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== STATS STRIP ===== -->
+    <section class="stats-strip" aria-label="Platform statistics">
+      <div class="container">
+        <div class="stats-strip__grid">
+          <div class="stat-item fade-in">
+            <div class="stat-item__value"><span class="stat-item__accent">10K</span>+</div>
+            <div class="stat-item__label" data-i18n="stat1_label">Active businesses</div>
+          </div>
+          <div class="stat-item fade-in fade-in--delay">
+            <div class="stat-item__value"><span class="stat-item__accent">99.9</span>%</div>
+            <div class="stat-item__label" data-i18n="stat2_label">Uptime guaranteed</div>
+          </div>
+          <div class="stat-item fade-in fade-in--delay2">
+            <div class="stat-item__value"><span class="stat-item__accent">100K</span>+</div>
+            <div class="stat-item__label" data-i18n="stat3_label">Forms processed</div>
+          </div>
+          <div class="stat-item fade-in fade-in--delay3">
+            <div class="stat-item__value"><span class="stat-item__accent">24/7</span></div>
+            <div class="stat-item__label" data-i18n="stat4_label">Expert support</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section class="services" id="services" aria-labelledby="servicesHeading">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="section-eyebrow" data-i18n="services_eyebrow">Our Products</span>
+          <h2 class="section-title" id="servicesHeading" data-i18n="services_title">Smart solutions for your business</h2>
+          <p class="section-sub" data-i18n="services_sub">Everything you need to manage, analyze and grow.</p>
+        </div>
+
+        <div class="services__grid">
+          <!-- Card 1: MyForm -->
+          <article class="service-card fade-in" aria-labelledby="card1Title">
+            <!-- =====================================================
+                 SERVICE CARD 1 IMAGE (MyForm)
+                 Replace the .service-card__illustration div with:
+                   <div class="service-card__img-wrap">
+                     <img src="myform-screenshot.png"
+                          alt="MyForm interface"
+                          class="service-card__img" />
+                   </div>
+                 Recommended: product screenshot, 640×280px
+                 ===================================================== -->
+            <div class="service-card__illustration service-card__illustration--blue" aria-hidden="true">
+              <div class="sc-icon-wrap">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="4" width="32" height="40" rx="5" fill="#2563ff" opacity=".12"/>
+                  <rect x="14" y="12" width="20" height="3" rx="1.5" fill="#2563ff"/>
+                  <rect x="14" y="19" width="14" height="3" rx="1.5" fill="#2563ff" opacity=".7"/>
+                  <rect x="14" y="26" width="18" height="3" rx="1.5" fill="#2563ff" opacity=".5"/>
+                  <rect x="14" y="33" width="10" height="3" rx="1.5" fill="#2563ff" opacity=".3"/>
+                  <circle cx="35" cy="35" r="10" fill="#2563ff"/>
+                  <path d="M31 35l2.5 2.5L39 32" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__badge service-card__badge--blue" data-i18n="card1_role">Online Form Builder</span>
+              <h3 class="service-card__name" id="card1Title">MyForm</h3>
+              <p class="service-card__desc" data-i18n="card1_desc">
+                Create beautiful, smart forms in minutes. Collect responses, automate notifications, and analyze data without writing a single line of code.
+              </p>
+              <div class="service-card__features">
+                <div class="service-card__feat">
+                  <div class="feat-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card1_feat1">Drag-and-drop builder</span>
+                </div>
+                <div class="service-card__feat">
+                  <div class="feat-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card1_feat2">Automated notifications</span>
+                </div>
+                <div class="service-card__feat">
+                  <div class="feat-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card1_feat3">Real-time analytics</span>
+                </div>
+              </div>
+              <a href="#" class="service-card__link" aria-label="Learn more about MyForm" data-i18n="card_learn">
+                Learn More
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2: MyPanel -->
+          <article class="service-card fade-in fade-in--delay" aria-labelledby="card2Title">
+            <!-- =====================================================
+                 SERVICE CARD 2 IMAGE (MyPanel)
+                 Replace the .service-card__illustration div with:
+                   <div class="service-card__img-wrap">
+                     <img src="mypanel-screenshot.png"
+                          alt="MyPanel dashboard"
+                          class="service-card__img" />
+                   </div>
+                 Recommended: dashboard screenshot, 640×280px
+                 ===================================================== -->
+            <div class="service-card__illustration service-card__illustration--orange" aria-hidden="true">
+              <div class="sc-icon-wrap">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="4" y="8" width="40" height="32" rx="5" fill="#f97316" opacity=".12"/>
+                  <rect x="4" y="8" width="40" height="11" rx="5" fill="#f97316" opacity=".22"/>
+                  <circle cx="10" cy="13.5" r="2.2" fill="#f97316"/>
+                  <circle cx="17" cy="13.5" r="2.2" fill="#f97316" opacity=".6"/>
+                  <rect x="10" y="24" width="9" height="9" rx="2.5" fill="#f97316" opacity=".6"/>
+                  <rect x="23" y="24" width="9" height="9" rx="2.5" fill="#f97316" opacity=".4"/>
+                  <rect x="36" y="24" width="6" height="9" rx="2.5" fill="#f97316" opacity=".25"/>
+                </svg>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__badge service-card__badge--orange" data-i18n="card2_role">Advanced Management Panel</span>
+              <h3 class="service-card__name" id="card2Title">MyPanel</h3>
+              <p class="service-card__desc" data-i18n="card2_desc">
+                A powerful dashboard for your entire operation. Monitor KPIs, manage users, configure settings, and run reports — all from one place.
+              </p>
+              <div class="service-card__features">
+                <div class="service-card__feat">
+                  <div class="feat-check" style="background:var(--orange-light)"><svg viewBox="0 0 12 12" fill="none" stroke="var(--orange)" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card2_feat1">Live KPI monitoring</span>
+                </div>
+                <div class="service-card__feat">
+                  <div class="feat-check" style="background:var(--orange-light)"><svg viewBox="0 0 12 12" fill="none" stroke="var(--orange)" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card2_feat2">User & role management</span>
+                </div>
+                <div class="service-card__feat">
+                  <div class="feat-check" style="background:var(--orange-light)"><svg viewBox="0 0 12 12" fill="none" stroke="var(--orange)" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card2_feat3">Automated reports</span>
+                </div>
+              </div>
+              <a href="#" class="service-card__link" style="color:var(--orange)" aria-label="Learn more about MyPanel" data-i18n="card_learn">
+                Learn More
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 3: MyStudio -->
+          <article class="service-card fade-in fade-in--delay" aria-labelledby="card3Title">
+            <!-- =====================================================
+                 SERVICE CARD 3 IMAGE (MyStudio)
+                 Replace the .service-card__illustration div with:
+                   <div class="service-card__img-wrap">
+                     <img src="mystudio-screenshot.png"
+                          alt="MyStudio code editor screenshot"
+                          class="service-card__img" />
+                   </div>
+                 Recommended: product screenshot, 640×280px
+                 ===================================================== -->
+            <div class="service-card__illustration service-card__illustration--purple" aria-hidden="true">
+              <div class="sc-icon-wrap">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="4" y="6" width="40" height="36" rx="5" fill="#8b5cf6" opacity=".12"/>
+                  <rect x="4" y="6" width="40" height="9" rx="5" fill="#8b5cf6" opacity=".25"/>
+                  <circle cx="10" cy="10.5" r="1.8" fill="#8b5cf6"/>
+                  <circle cx="16" cy="10.5" r="1.8" fill="#8b5cf6" opacity=".6"/>
+                  <circle cx="22" cy="10.5" r="1.8" fill="#8b5cf6" opacity=".35"/>
+                  <rect x="9" y="20" width="11" height="3" rx="1.5" fill="#8b5cf6" opacity=".7"/>
+                  <rect x="9" y="26" width="16" height="3" rx="1.5" fill="#8b5cf6" opacity=".5"/>
+                  <rect x="9" y="32" width="8" height="3" rx="1.5" fill="#8b5cf6" opacity=".35"/>
+                  <path d="M30 22l6 6-6 6" stroke="#8b5cf6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M40 20l-3 16" stroke="#8b5cf6" stroke-width="2.4" stroke-linecap="round" opacity=".6"/>
+                </svg>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__badge service-card__badge--purple" data-i18n="card3_role">Cloud Development Studio</span>
+              <h3 class="service-card__name" id="card3Title">MyStudio</h3>
+              <p class="service-card__desc" data-i18n="card3_desc">
+                A full coding environment in your browser, just like VS Code. Write, run, and debug projects with syntax highlighting, extensions, and an integrated terminal — no installation required.
+              </p>
+              <div class="service-card__features">
+                <div class="service-card__feat">
+                  <div class="feat-check" style="background:var(--purple-light)"><svg viewBox="0 0 12 12" fill="none" stroke="var(--purple)" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card3_feat1">VS Code-like editor</span>
+                </div>
+                <div class="service-card__feat">
+                  <div class="feat-check" style="background:var(--purple-light)"><svg viewBox="0 0 12 12" fill="none" stroke="var(--purple)" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card3_feat2">Integrated terminal</span>
+                </div>
+                <div class="service-card__feat">
+                  <div class="feat-check" style="background:var(--purple-light)"><svg viewBox="0 0 12 12" fill="none" stroke="var(--purple)" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                  <span data-i18n="card3_feat3">Extensions & live preview</span>
+                </div>
+              </div>
+              <a href="#" class="service-card__link" style="color:var(--purple)" aria-label="Learn more about MyStudio" data-i18n="card_learn">
+                Learn More
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features" id="features" aria-labelledby="featuresHeading">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="section-eyebrow" data-i18n="features_eyebrow">Why Choose Us</span>
+          <h2 class="section-title" id="featuresHeading" data-i18n="features_title">Built for performance and peace of mind</h2>
+          <p class="section-sub" data-i18n="features_sub">Every feature is designed to make your team faster, safer, and more informed.</p>
+        </div>
+
+        <div class="features__grid">
+          <div class="feature-box fade-in" tabindex="0">
+            <div class="feature-box__icon feature-box__icon--blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <h3 data-i18n="feat1_title">Fast &amp; Efficient</h3>
+            <p data-i18n="feat1_desc">Optimized pipelines deliver results in milliseconds, so your workflow never waits on your tools.</p>
+          </div>
+
+          <div class="feature-box fade-in fade-in--delay" tabindex="0">
+            <div class="feature-box__icon feature-box__icon--orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 data-i18n="feat2_title">Secure &amp; Reliable</h3>
+            <p data-i18n="feat2_desc">Enterprise-grade encryption and 99.9% uptime SLA keep your data protected and your services online.</p>
+          </div>
+
+          <div class="feature-box fade-in fade-in--delay2" tabindex="0">
+            <div class="feature-box__icon feature-box__icon--purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><polyline points="2 20 22 20"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feat3_title">Analytics &amp; Insights</h3>
+            <p data-i18n="feat3_desc">Visual dashboards turn raw numbers into clear decisions, helping you spot trends before they become problems.</p>
+          </div>
+
+          <div class="feature-box fade-in fade-in--delay3" tabindex="0">
+            <div class="feature-box__icon feature-box__icon--green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14v2.92z"/></svg>
+            </div>
+            <h3 data-i18n="feat4_title">24/7 Support</h3>
+            <p data-i18n="feat4_desc">Our team is always on. Real humans, real answers — any hour, any timezone, any issue you run into.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials" id="testimonials" aria-labelledby="testimonialsHeading">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="section-eyebrow" data-i18n="test_eyebrow">Customer Stories</span>
+          <h2 class="section-title" id="testimonialsHeading" data-i18n="test_title">Loved by thousands of teams</h2>
+          <p class="section-sub" data-i18n="test_sub">See what our customers are saying about MyPlatform.</p>
+        </div>
+
+        <div class="testimonials__grid">
+          <!-- Testimonial 1 -->
+          <div class="testimonial-card fade-in">
+            <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="testimonial-card__text" data-i18n="test1_text">"MyPlatform completely transformed how our team handles client onboarding. What used to take days now takes minutes. I can't imagine going back."</p>
+            <div class="testimonial-card__author">
+              <!-- Replace with <img src="sarah.jpg" alt="Sarah M." class="testimonial-avatar-img" /> -->
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#c7d8ff,#2563ff)">SM</div>
+              <div>
+                <div class="testimonial-card__name" data-i18n="test1_name">Sarah Mitchell</div>
+                <div class="testimonial-card__role" data-i18n="test1_role">Head of Operations, TechFlow</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div class="testimonial-card fade-in fade-in--delay">
+            <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="testimonial-card__text" data-i18n="test2_text">"The analytics dashboard in MyPanel is a game-changer. We cut our reporting time by 70% in the first week. The support team is incredibly responsive."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#ffd5a8,#f97316)">AR</div>
+              <div>
+                <div class="testimonial-card__name" data-i18n="test2_name">Ali Rezaei</div>
+                <div class="testimonial-card__role" data-i18n="test2_role">CEO, Nexify Solutions</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 3 -->
+          <div class="testimonial-card fade-in fade-in--delay2">
+            <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="star" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="testimonial-card__text" data-i18n="test3_text">"We've tried many platforms, but none matched MyPlatform's combination of simplicity and power. Setup took 20 minutes, and we were live the same day."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#c7ffdc,#22c55e)">LK</div>
+              <div>
+                <div class="testimonial-card__name" data-i18n="test3_name">Layla Karimi</div>
+                <div class="testimonial-card__role" data-i18n="test3_role">Product Manager, GrowthBase</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TRUSTED COMPANIES ===== -->
+    <section class="trusted" id="about" aria-labelledby="trustedHeading">
+      <div class="container">
+        <p class="trusted__label" id="trustedHeading" data-i18n="trusted_label">Trusted by teams at</p>
+        <div class="trusted__logos fade-in" aria-label="Trusted companies">
+          <!-- =====================================================
+               TRUSTED LOGOS
+               Replace each text item with an image:
+                 <a href="#" class="trusted__logo-item">
+                   <img src="company-logo.svg" alt="Company Name"
+                        class="trusted__logo-img" />
+                 </a>
+               ===================================================== -->
+          
+          
+          <div class="trusted__logo-item">JS</div>
+          <div class="trusted__logo-item">Phyton</div>
+          <div class="trusted__logo-item">Avenix</div>
+          <div class="trusted__logo-item">Google</div>
+          <div class="trusted__logo-item">Cloude</div>
+          <div class="trusted__logo-item">GitHub</div>          
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRICING ===== -->
+    <section class="pricing" id="pricing-sect" aria-labelledby="pricingHeading">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="section-eyebrow" data-i18n="pricing_eyebrow">Pricing</span>
+          <h2 class="section-title" id="pricingHeading" data-i18n="pricing_title">Simple, transparent pricing</h2>
+          <p class="section-sub" data-i18n="pricing_sub">No hidden fees. Cancel anytime. Start free.</p>
+        </div>
+
+        <div class="pricing__grid">
+          <!-- Starter -->
+          <div class="pricing-card fade-in">
+            <div class="pricing-card__name" data-i18n="plan1_name">Starter</div>
+            <div class="pricing-card__price">
+              <span class="pricing-card__currency">$</span>
+              <span class="pricing-card__amount" data-i18n="plan1_price">0</span>
+              <span class="pricing-card__period" data-i18n="plan1_period">/ month</span>
+            </div>
+            <p class="pricing-card__desc" data-i18n="plan1_desc">Perfect for individuals and small projects getting started.</p>
+            <div class="pricing-card__divider"></div>
+            <div class="pricing-card__features">
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan1_f1">Up to 5 forms</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan1_f2">100 responses / month</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan1_f3">Basic analytics</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan1_f4">Email support</span>
+              </div>
+            </div>
+            <a href="#" class="btn btn--ghost" style="width:100%;justify-content:center" data-i18n="plan_start_free">Get Started Free</a>
+          </div>
+
+          <!-- Pro (featured) -->
+          <div class="pricing-card pricing-card--featured fade-in fade-in--delay">
+            <div class="pricing-card__popular" data-i18n="plan_popular">✦ Most Popular</div>
+            <div class="pricing-card__name" data-i18n="plan2_name">Pro</div>
+            <div class="pricing-card__price">
+              <span class="pricing-card__currency">$</span>
+              <span class="pricing-card__amount" data-i18n="plan2_price">29</span>
+              <span class="pricing-card__period" data-i18n="plan2_period">/ month</span>
+            </div>
+            <p class="pricing-card__desc" data-i18n="plan2_desc">For growing teams that need more power and customization.</p>
+            <div class="pricing-card__divider"></div>
+            <div class="pricing-card__features">
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan2_f1">Unlimited forms</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan2_f2">10,000 responses / month</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan2_f3">Advanced analytics</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan2_f4">Priority 24/7 support</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan2_f5">API access</span>
+              </div>
+            </div>
+            <a href="#" class="btn btn--primary" style="width:100%;justify-content:center" data-i18n="plan_start">Get Started</a>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="pricing-card fade-in fade-in--delay2">
+            <div class="pricing-card__name" data-i18n="plan3_name">Enterprise</div>
+            <div class="pricing-card__price">
+              <span class="pricing-card__currency">$</span>
+              <span class="pricing-card__amount" data-i18n="plan3_price">99</span>
+              <span class="pricing-card__period" data-i18n="plan3_period">/ month</span>
+            </div>
+            <p class="pricing-card__desc" data-i18n="plan3_desc">For large organizations with advanced security and compliance needs.</p>
+            <div class="pricing-card__divider"></div>
+            <div class="pricing-card__features">
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan3_f1">Everything in Pro</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan3_f2">Unlimited responses</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan3_f3">SSO &amp; SAML</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan3_f4">Dedicated account manager</span>
+              </div>
+              <div class="pricing-feat">
+                <div class="pricing-feat-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="2,6 5,9 10,3"/></svg></div>
+                <span data-i18n="plan3_f5">Custom SLA &amp; contracts</span>
+              </div>
+            </div>
+            <a href="#" class="btn btn--ghost" style="width:100%;justify-content:center" data-i18n="plan_contact">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="cta-banner fade-in" id="pricing" aria-labelledby="ctaHeading">
+      <div class="container cta-banner__inner">
+        <div class="cta-banner__text">
+          <h2 id="ctaHeading" data-i18n="cta_title">Ready to get started?</h2>
+          <p data-i18n="cta_sub">Join thousands of businesses that run smarter with MyPlatform.</p>
+        </div>
+        <div class="cta-banner__actions">
+          <a href="#" class="btn btn--white btn--lg"       data-i18n="cta_btn1">Get Started Free</a>
+          <a href="#" class="btn btn--ghost-white btn--lg" data-i18n="cta_btn2">Contact Sales</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" role="contentinfo" id="resources">
+    <div class="container footer__grid">
+
+      <!-- Brand col -->
+      <div class="footer__col footer__col--brand">
+        <!-- =====================================================
+             FOOTER LOGO
+             Replace placeholder with:
+               <img src="YOUR_LOGO.png" alt="MyPlatform"
+                    class="footer-logo-img" />
+             ===================================================== -->
+        <img class="footer-logo-placeholder" aria-label="MyPlatform logo" src="MyLogo.png">
+        <p class="footer__desc" data-i18n="footer_desc">Building smart tools that help modern businesses move with confidence.</p>
+        <div class="footer__socials" aria-label="Social media links">
+          <a href="#" class="social-icon" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Product links -->
+      <div class="footer__col">
+        <h4 class="footer__heading" data-i18n="footer_product">Product</h4>
+        <ul class="footer__links" role="list">
+          <li><a href="#" data-i18n="footer_features">Features</a></li>
+          <li><a href="#" data-i18n="footer_pricing">Pricing</a></li>
+          <li><a href="#" data-i18n="footer_changelog">Changelog</a></li>
+          <li><a href="#" data-i18n="footer_docs">Documentation</a></li>
+          <li><a href="#" data-i18n="footer_api">API Reference</a></li>
+        </ul>
+      </div>
+
+      <!-- Company links -->
+      <div class="footer__col">
+        <h4 class="footer__heading" data-i18n="footer_company">Company</h4>
+        <ul class="footer__links" role="list">
+          <li><a href="#" data-i18n="footer_about">About Us</a></li>
+          <li><a href="#" data-i18n="footer_blog">Blog</a></li>
+          <li><a href="#" data-i18n="footer_careers">Careers</a></li>
+          <li><a href="#" data-i18n="footer_press">Press</a></li>
+          <li><a href="#" data-i18n="footer_contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer__col">
+        <h4 class="footer__heading" data-i18n="footer_newsletter">Stay Updated</h4>
+        <p class="footer__newsletter-desc" data-i18n="footer_newsletter_sub">Get the latest news and updates directly in your inbox.</p>
+        <form class="newsletter-form" aria-label="Newsletter sign-up" onsubmit="handleNewsletter(event)">
+          <input type="email" class="newsletter-input" placeholder="your@email.com"
+                 aria-label="Email address" data-i18n-placeholder="newsletter_placeholder" required />
+          <button type="submit" class="btn btn--primary newsletter-btn" data-i18n="newsletter_btn">Subscribe</button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p class="footer__copy">
+          &copy; <span id="year"></span> MyPlatform.
+          <span data-i18n="footer_rights">All rights reserved.</span>
+        </p>
+        <div class="footer__legal">
+          <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+          <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =============================================
+       I18N DICTIONARY
+       ============================================= */
+    var i18n = {
+      en: {
+        nav_home:"Home", nav_features:"Features", nav_services:"Services",
+        nav_pricing:"Pricing", nav_resources:"Resources", nav_about:"About Us", nav_cta:"Get Started",
+
+        hero_badge:"A platform with high features",
+        hero_title_line1:"Advanced features",
+        hero_title_line2:"Smarter & Faster",
+        hero_desc:"Versatile platform for building project creation forms and personal panels - with high features.",
+        hero_cta1:"Explore Services", hero_cta2:"Learn More",
+        hero_stat:"Happy customers worldwide",
+
+        stat1_label:"Active users",
+        stat2_label:"Uptime guaranteed",
+        stat3_label:"Account created",
+        stat4_label:"Expert support",
+
+        services_eyebrow:"Our Products",
+        services_title:"Smart, fast solutions and easy access for you",
+        services_sub:"Everything you need to record creation and design",
+        card1_role:"Online Form Builder",
+        card1_desc:"Create beautiful, smart forms in minutes. Collect responses, automate notifications, and analyze data without writing a single line of code.",
+        card1_feat1:"Drag-and-drop builder",
+        card1_feat2:"Automated notifications",
+        card1_feat3:"Real-time analytics",
+        card_learn:"Learn More",
+        card2_role:"Advanced Personal Panel",
+        card2_desc:"A powerful dashboard for all the information, tools and data logging you can use.",
+        card2_feat1:"Completely offline",
+        card2_feat2:"50 Advanced tools",
+        card2_feat3:"Automated reports",
+        card3_role:"Cloud Development Studio",
+        card3_desc:"A full coding environment in your browser, just like VS Code. Write, run, and debug projects with syntax highlighting, extensions, and an integrated terminal — no installation required.",
+        card3_feat1:"VS Code-like editor",
+        card3_feat2:"Integrated terminal",
+        card3_feat3:"Extensions & live preview",
+
+        features_eyebrow:"Why Choose Us",
+        features_title:"Built for performance and peace of mind",
+        features_sub:"Every feature is designed to make your team faster, safer, and more informed.",
+        feat1_title:"Fast & Efficient",
+        feat1_desc:"Optimized pipelines deliver results in milliseconds, so your workflow never waits on your tools.",
+        feat2_title:"Secure & Reliable",
+        feat2_desc:"Enterprise-grade encryption and 99.9% uptime SLA keep your data protected and your services online.",
+        feat3_title:"Analytics & Insights",
+        feat3_desc:"Visual dashboards turn raw numbers into clear decisions, helping you spot trends before they become problems.",
+        feat4_title:"24/7 Support",
+        feat4_desc:"Our team is always on. Real humans, real answers — any hour, any timezone, any issue you run into.",
+
+        test_eyebrow:"Customer Stories",
+        test_title:"Loved by thousands of teams",
+        test_sub:"See what our customers are saying about MyPlatform.",
+        test1_text:'"MyPlatform completely transformed how our team handles client onboarding. What used to take days now takes minutes."',
+        test1_name:"Sarah Mitchell", test1_role:"Head of Operations, TechFlow",
+        test2_text:'"MyStudio is always available, convenient and easy to use, and it is not difficult to work with it, and you can create various projects with it."',
+        test2_name:"Ali Rezaei", test2_role:"Programmer",
+        test3_text:'"With MyPanel, I can easily access my information and do my work without being connected to the global network."',
+        test3_name:"Layla Karimi", test3_role:"Simple user",
+
+        trusted_label:"Trusted by teams at",
+
+        pricing_eyebrow:"Pricing",
+        pricing_title:"Simple, transparent pricing",
+        pricing_sub:"No hidden fees. Cancel anytime. Start free.",
+        plan1_name:"Starter", plan1_price:"0", plan1_period:"/ month",
+        plan1_desc:"For testing and unlimited use.",
+        plan1_f1:"25 MyPanel Tools", plan1_f2:"25 MyForm Forms / 24h", plan1_f3:" MyStudio Limited Options", plan1_f4:"Email support",
+        plan2_name:"Pro", plan2_price:"19", plan2_period:"/ month",
+        plan2_desc:"For teams and individuals with high capabilities and advanced tools.",
+        plan2_f1:"45 MyPanel Tools", plan2_f2:"10,000 responses / month", plan2_f3:"MyStudio with unlimited options", plan2_f4:"Cloud backup up to 5 GB", plan2_f5:"API access",
+        plan3_name:"Enterprise", plan3_price:"99", plan3_period:"/ month",
+        plan3_desc:"For large organizations with advanced security and compliance needs.",
+        plan3_f1:"Everything in Pro", plan3_f2:"Unlimited responses", plan3_f3:"SSO & SAML", plan3_f4:"Dedicated account manager", plan3_f5:"Custom SLA & contracts",
+        plan_popular:"✦ Most Popular",
+        plan_start_free:"Get Started Free", plan_start:"Get Started", plan_contact:"Contact Sales",
+
+        cta_title:"Ready to get started?",
+        cta_sub:"Join our platform users and use free services.",
+        cta_btn1:"Get Started Free", cta_btn2:"Contact Sales",
+
+        footer_desc:"Building smart tools that help modern businesses move with confidence.",
+        footer_product:"Product", footer_features:"Features", footer_pricing:"Pricing",
+        footer_changelog:"Changelog", footer_docs:"Documentation", footer_api:"API Reference",
+        footer_company:"Company", footer_about:"About Us", footer_blog:"Blog",
+        footer_careers:"Careers", footer_press:"Press", footer_contact:"Contact",
+        footer_newsletter:"Stay Updated", footer_newsletter_sub:"Get the latest news and updates directly in your inbox.",
+        newsletter_placeholder:"your@email.com", newsletter_btn:"Subscribe",
+        footer_rights:"All rights reserved.", footer_privacy:"Privacy Policy", footer_terms:"Terms of Service",
+        newsletter_thanks:"Thanks for subscribing!"
+      },
+      fa: {
+        nav_home:"خانه", nav_features:"امکانات", nav_services:"خدمات",
+        nav_pricing:"قیمت‌گذاری", nav_resources:"منابع", nav_about:"درباره ما", nav_cta:"شروع کنید",
+
+        hero_badge:"پتلفرمی با امکانات بالا ",
+        hero_title_line1:"ویژگی‌های پیشرفته",
+        hero_title_line2:"هوشمندتر و سریع‌تر",
+        hero_desc:"پلتفرم همه کاره برای ساخت فرم ایجاد پروژه و پنل شخصی - با امکانات بالا.",
+        hero_cta1:"مشاهده خدمات", hero_cta2:"بیشتر بدانید",
+        hero_stat:"مشتری راضی در سراسر جهان",
+
+        stat1_label:"کاربران فعال",
+        stat2_label:"تضمین آپتایم",
+        stat3_label:"اکانت ساخته شده",
+        stat4_label:"پشتیبانی تخصصی",
+
+        services_eyebrow:"محصولات ما",
+        services_title:"راهکار های هوشمند و سریع و دسترسی راحت برای شما",
+        services_sub:"هر انچه برای ثبت ایجاد و طراحی نیاز دارید ",
+        card1_role:"سازنده فرم آنلاین",
+        card1_desc:"در عرض چند دقیقه فرم‌های زیبا و هوشمند بسازید. پاسخ‌ها را جمع‌آوری کنید و داده‌ها را بدون نوشتن حتی یک خط کد تحلیل کنید.",
+        card1_feat1:"سازنده درگ‌اندراپ",
+        card1_feat2:"اعلان‌های خودکار",
+        card1_feat3:"تحلیل آنی داده",
+        card_learn:"بیشتر بدانید",
+        card2_role:"پنل شخصی پیشرفته",
+        card2_desc:"یک داشبورد قدرتمند برای کل اطلاعات و ابزار ها و ثبت داده میتوانید استفاده کنید",
+        card2_feat1:"کاملا افلاین",
+        card2_feat2:"50 ابزار پیشرفته",
+        card2_feat3:"گزارش‌گیری خودکار",
+        card3_role:"استودیوی توسعه ابری",
+        card3_desc:"یک محیط برنامه‌نویسی کامل درست داخل مرورگرتان، شبیه VS Code. پروژه‌ها را بنویسید، اجرا کنید و دیباگ کنید؛ همراه با هایلایت سینتکس، اکستنشن‌ها و ترمینال یکپارچه — بدون نیاز به نصب چیزی.",
+        card3_feat1:"ادیتوری شبیه VS Code",
+        card3_feat2:"ترمینال یکپارچه",
+        card3_feat3:"اکستنشن و پیش‌نمایش زنده",
+
+        features_eyebrow:"چرا ما را انتخاب کنید",
+        features_title:"ساخته‌شده برای عملکرد و آرامش ذهنی",
+        features_sub:"هر امکانی برای سریع‌تر، امن‌تر و آگاه‌تر کردن تیم شما طراحی شده است.",
+        feat1_title:"سریع و کارآمد",
+        feat1_desc:"خطوط پردازش بهینه‌شده نتایج را در چند میلی‌ثانیه ارائه می‌دهند تا گردش کار شما هرگز منتظر ابزارهایتان نماند.",
+        feat2_title:"امن و قابل‌اعتماد",
+        feat2_desc:"رمزنگاری سازمانی و تعهد ۹۹.۹٪ آپتایم، داده‌ها و خدمات شما را همیشه ایمن و آنلاین نگه می‌دارد.",
+        feat3_title:"تحلیل و بینش داده",
+        feat3_desc:"داشبوردهای تصویری، اعداد خام را به تصمیم‌های روشن تبدیل می‌کنند و روندها را پیش از تبدیل‌شدن به مشکل نشان می‌دهند.",
+        feat4_title:"پشتیبانی ۲۴ ساعته",
+        feat4_desc:"تیم ما همیشه در دسترس است. افراد واقعی، پاسخ‌های واقعی — در هر ساعت و هر منطقه زمانی.",
+
+        test_eyebrow:"داستان‌های مشتریان",
+        test_title:"مورد علاقه هزاران تیم",
+        test_sub:"ببینید مشتریان ما درباره MyPlatform چه می‌گویند.",
+        test1_text:"«MyPlatform کاملاً نحوه مدیریت پذیرش مشتری تیم ما را متحول کرد. کاری که قبلاً روزها طول می‌کشید، حالا چند دقیقه است.»",
+        test1_name:"سارا میچل", test1_role:"مدیر عملیات، TechFlow",
+        test2_text:"«MyStudio همیشه دردسترس قرار دارد و راحت و اسان است و کار باهاش اصلا سخت نیست و میشه باهاش پروژه های مختلفی ساخت»",
+        test2_name:"علی رضایی", test2_role:"برنامه نویس",
+        test3_text:"«با MyPanel می تونم به راحتی اطلاعات ام و کار هایم را انجام بدهم بدون اینکه به شبکه جهانی وصل باشم »",
+        test3_name:"لیلا کریمی", test3_role:"کاربر ساده",
+
+        trusted_label:"مورد اعتماد تیم‌هایی در",
+
+        pricing_eyebrow:"قیمت‌گذاری",
+        pricing_title:"قیمت‌گذاری ساده و شفاف",
+        pricing_sub:"بدون هزینه پنهان. لغو در هر زمان. شروع رایگان.",
+        plan1_name:"استارتر", plan1_price:"رایگان", plan1_period:"",
+        plan1_desc:"برای تست و استفاده نامحدود.",
+        plan1_f1:"۲۵ ابزار مای پنل", plan1_f2:"۲۵ فرم مای فرم", plan1_f3:"مای استادیو اپشن های محدود", plan1_f4:"پشتیبانی",
+        plan2_name:"حرفه‌ای", plan2_price:"۱۹", plan2_period:"/ ماه",
+        plan2_desc:"برای تیم و اشخاص با امکانات بالا و ابزار های پیشرفته",
+        plan2_f1:"۴۵ ابزار ما پنل", plan2_f2:" ۱۰۰۰۰ فرم ", plan2_f3:"مای استادیو با اپشن نامحدود", plan2_f4:"بکاپ در فضای ابری تا ۵ گیگ", plan2_f5:"دسترسی به API",
+        plan3_name:"سازمانی", plan3_price:"۹۹", plan3_period:"/ ماه",
+        plan3_desc:"برای سازمان‌های بزرگ با نیازهای امنیتی و انطباق پیشرفته.",
+        plan3_f1:"همه امکانات حرفه‌ای", plan3_f2:"فرم نامحدود", plan3_f3:"SSO و SAML", plan3_f4:"مدیر اختصاصی حساب", plan3_f5:"SLA و قراردادهای سفارشی",
+        plan_popular:"✦ محبوب‌ترین",
+        plan_start_free:"شروع رایگان", plan_start:"شروع کنید", plan_contact:"تماس با فروش",
+
+        cta_title:"آماده‌اید شروع کنید؟",
+        cta_sub:"به کاربران مای پلتفرم بپیوند و از خدمات رایگان استفاده کن.",
+        cta_btn1:"شروع رایگان", cta_btn2:"تماس با فروش",
+
+        footer_desc:"ساخت ابزارهای هوشمند که به کسب‌وکارهای مدرن کمک می‌کند با اطمینان پیش بروند.",
+        footer_product:"محصول", footer_features:"امکانات", footer_pricing:"قیمت‌گذاری",
+        footer_changelog:"تغییرات", footer_docs:"مستندات", footer_api:"مرجع API",
+        footer_company:"شرکت", footer_about:"درباره ما", footer_blog:"بلاگ",
+        footer_careers:"فرصت‌های شغلی", footer_press:"رسانه‌ها", footer_contact:"تماس با ما",
+        footer_newsletter:"در جریان باشید", footer_newsletter_sub:"آخرین اخبار و به‌روزرسانی‌ها را مستقیماً دریافت کنید.",
+        newsletter_placeholder:"ایمیل شما", newsletter_btn:"عضویت",
+        footer_rights:"تمامی حقوق محفوظ است.", footer_privacy:"حریم خصوصی", footer_terms:"شرایط استفاده",
+        newsletter_thanks:"از عضویت شما متشکریم!"
+      }
+    };
+
+    /* =============================================
+       LANGUAGE
+       ============================================= */
+    function applyLanguage(lang) {
+      var dict = i18n[lang] || i18n.en;
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+      });
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        var active = btn.getAttribute('data-lang') === lang;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      localStorage.setItem('lang', lang);
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() { applyLanguage(btn.getAttribute('data-lang')); });
+    });
+
+    /* =============================================
+       THEME
+       ============================================= */
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      var toggle = document.getElementById('darkToggle');
+      if (toggle) toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+      localStorage.setItem('theme', theme);
+    }
+
+    var darkToggleBtn = document.getElementById('darkToggle');
+    if (darkToggleBtn) {
+      darkToggleBtn.addEventListener('click', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        applyTheme(isDark ? 'light' : 'dark');
+      });
+    }
+
+    /* =============================================
+       NAVBAR SCROLL EFFECT
+       ============================================= */
+    var navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', function() {
+      if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    /* =============================================
+       MOBILE MENU
+       ============================================= */
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobileMenu');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', function() {
+        var isOpen = mobileMenu.classList.toggle('open');
+        hamburger.classList.toggle('open', isOpen);
+        hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+      });
+      mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        });
+      });
+    }
+
+    /* =============================================
+       FADE-IN ON SCROLL
+       ============================================= */
+    var faders = document.querySelectorAll('.fade-in');
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      faders.forEach(function(el) { observer.observe(el); });
+    } else {
+      faders.forEach(function(el) { el.classList.add('visible'); });
+    }
+
+    /* =============================================
+       NEWSLETTER
+       ============================================= */
+    function handleNewsletter(event) {
+      event.preventDefault();
+      var lang = document.documentElement.getAttribute('lang') === 'fa' ? 'fa' : 'en';
+      var form = event.target;
+      var input = form.querySelector('input[type="email"]');
+      var msg = i18n[lang].newsletter_thanks;
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) { btn.textContent = msg; btn.disabled = true; }
+      if (input) input.value = '';
+    }
+
+    /* =============================================
+       FOOTER YEAR
+       ============================================= */
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    /* =============================================
+       INIT
+       ============================================= */
+    (function init() {
+      var savedTheme = localStorage.getItem('theme');
+      applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+      var savedLang = localStorage.getItem('lang');
+      applyLanguage(savedLang === 'fa' ? 'fa' : 'en');
+    })();
+  </script>
+</body>
+</html>
